@@ -115,9 +115,7 @@ export function HeroHeader({ onExplore }: HeroHeaderProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <div className="mb-2 inline-block rounded-full bg-red-600 px-4 py-1 text-sm font-medium uppercase tracking-wider text-white">
-          Descubre la libertad
-        </div>
+        
       </motion.div>
 
       <motion.h1

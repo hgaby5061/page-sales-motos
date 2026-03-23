@@ -12,7 +12,7 @@ interface CatalogHeaderProps {
  */
 export function CatalogHeader({ title, subtitle }: CatalogHeaderProps) {
   return (
-    <div className="mb-8 md:mb-12">
+    <div className="mb-8 mt-4 md:mb-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

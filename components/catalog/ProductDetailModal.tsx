@@ -149,16 +149,7 @@ export function ProductDetailModal({
                   {product.description}
                 </p>
               </div>
-
-              {/* Información adicional */}
-              <div className="bg-gray-800 rounded-lg p-4 space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Imágenes disponibles:</span>
-                  <span className="text-white font-semibold">
-                    {images.length}
-                  </span>
-                </div>
-              </div>
+              
             </div>
 
             {/* Botones de acción */}

@@ -43,9 +43,13 @@ export function CategoryTabs({
   return (
     <Tabs defaultValue={categories[0]?.name || "all"} className="w-full">
       {/* Pestañas de categorías */}
-      <TabsList className="grid w-full grid-cols-3 lg:grid-cols-4 mb-8 bg-gray-800 dark:bg-gray-900">
+      <TabsList className="grid w-full text-white grid-cols-3 lg:grid-cols-4 mb-8 bg-gray-800 dark:bg-gray-900">
         {categories.map((category) => (
-          <TabsTrigger key={category.id} value={category.name}>
+          <TabsTrigger
+            key={category.id}
+            value={category.name}
+            className="data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=active]:shadow-lg"
+          >
             {category.name}
           </TabsTrigger>
         ))}
@@ -67,9 +71,7 @@ export function CategoryTabs({
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-400">
-                No hay productos en esta categoría
-              </p>
+              <p className="text-red-400">No hay productos en esta categoría</p>
             </div>
           )}
         </TabsContent>
