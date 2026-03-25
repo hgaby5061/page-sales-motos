@@ -63,7 +63,9 @@ export function HomeProductsSection({
                   {category.name}
                 </h3>
                 <a
-                  href="/catalogo"
+                  href={`/catalogo?category=${encodeURIComponent(
+                    category.name
+                  )}`}
                   className="text-red-600 font-semibold hover:text-red-700 transition-colors"
                 >
                   Ver todos →

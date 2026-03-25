@@ -9,17 +9,20 @@ import {
   HeroHeader,
 } from "@/components/home/HeroSection";
 import { HomeProductsSection } from "@/components/home/HomeProductsSection";
-import { useCatalogData } from "@/hooks/useCatalogData";
 import { ProductDetailModal } from "@/components/catalog/ProductDetailModal";
-import type { ProcessedProduct } from "@/types/strapi";
+import type { ProcessedProduct, ProcessedCategory } from "@/types/strapi";
 import { Footer } from "@/app/footer";
 
 /**
  * Container principal del home
  * Orquesta todas las secciones: Hero, Productos
  */
-export function HomeContainer() {
-  const { data, loading } = useCatalogData();
+interface HomeContainerProps {
+  products: ProcessedProduct[];
+  categories: ProcessedCategory[];
+}
+
+export function HomeContainer({ products, categories }: HomeContainerProps) {
   const [selectedProduct, setSelectedProduct] =
     useState<ProcessedProduct | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,18 +115,12 @@ export function HomeContainer() {
 
       {/* Productos Section */}
       <div ref={catalogRef}>
-        {data && !loading ? (
-          <HomeProductsSection
-            products={data.products}
-            categories={data.categories}
-            onProductSelect={handleProductSelect}
-            isInView={isCatalogInView}
-          />
-        ) : (
-          <div className="py-20 text-center text-gray-500">
-            Cargando productos...
-          </div>
-        )}
+        <HomeProductsSection
+          products={products}
+          categories={categories}
+          onProductSelect={handleProductSelect}
+          isInView={isCatalogInView}
+        />
       </div>
 
       {/* Modal */}

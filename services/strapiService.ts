@@ -30,7 +30,7 @@ export async function fetchProducts(): Promise<StrapiProductsResponse> {
       {
         method: "GET",
         headers: apiHeaders,
-        next: { revalidate: 3600 }, // ISR: revalidar cada 1 hora
+        next: { revalidate: 10/* 3600 */ }, // ISR: revalidar cada hora
       }
     );
 

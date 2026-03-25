@@ -17,7 +17,7 @@ export function ScrollIndicator() {
   useEffect(() => {
     const handleScroll = () => {
       // Ocultar el indicador cuando se ha desplazado más del 90% de la primera pantalla
-      if (window.scrollY > window.innerHeight * 0.9) {
+      if (window.scrollY > window.innerHeight * 0.1) {
         setShowScrollDown(false)
       } else {
         setShowScrollDown(true)

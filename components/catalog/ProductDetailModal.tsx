@@ -7,8 +7,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { ProcessedProduct } from "@/types/strapi";
 
 interface ProductDetailModalProps {
@@ -25,21 +31,10 @@ export function ProductDetailModal({
   isOpen,
   onClose,
 }: ProductDetailModalProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   if (!product) return null;
 
   const images =
     product.images.length > 0 ? product.images : [product.thumbnail];
-  const currentImage = images[currentImageIndex];
-
-  const handlePrevImage = () => {
-    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const handleNextImage = () => {
-    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -58,68 +53,64 @@ export function ProductDetailModal({
         </DialogHeader>
 
         <div className="px-4 md:px-6 py-4 grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-y-auto max-h-[calc(95vh-120px)]">
-          {/* Galería de imágenes */}
-          <div className="flex flex-col gap-4 order-1 lg:order-none">
-            {/* Imagen principal */}
-            <div className="relative w-full aspect-square overflow-hidden rounded-lg bg-gray-800">
-              <Image
-                src={currentImage}
-                alt={product.name}
-                fill
-                className="object-cover"
-                priority
-              />
-
-              {/* Indicador de imagen actual */}
-              {images.length > 1 && (
-                <div className="absolute top-4 right-4 bg-black/70 text-white text-sm px-3 py-1 rounded-full">
-                  {currentImageIndex + 1} / {images.length}
-                </div>
-              )}
+          {/* Galería de imágenes - Fixed responsive carousel */}
+          <div className="order-1 lg:order-none flex flex-col gap-4">
+            <div className="w-full aspect-video lg:aspect-square max-h-[400px] overflow-hidden rounded-lg bg-gray-800">
+              <Carousel
+                opts={{ align: "start", loop: true }}
+                className="w-full h-full"
+              >
+                <CarouselContent className="-ml-4 lg:-ml-0">
+                  {images.map((imageUrl, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="pl-4 lg:pl-0 md:basis-1/2 lg:basis-1/1"
+                    >
+                      <div className="relative h-full p-1">
+                        <Image
+                          src={imageUrl}
+                          alt={`${product.name} - Imagen ${index + 1}`}
+                          fill
+                          className="object-cover rounded-lg"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          priority={index === 0}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                {images.length > 1 && (
+                  <>
+                    <CarouselPrevious className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-700 absolute -left-2 top-1/2 -translate-y-1/2 z-20" />
+                    <CarouselNext className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-700 absolute -right-2 top-1/2 -translate-y-1/2 z-20" />
+                  </>
+                )}
+              </Carousel>
             </div>
 
-            {/* Controles de galería - Desktop y móvil */}
+            {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex items-center justify-center gap-2 md:gap-4">
-                <button
-                  onClick={handlePrevImage}
-                  className="p-2 md:p-3 hover:bg-gray-800 rounded-full transition-colors text-gray-300 hover:text-white"
-                  aria-label="Imagen anterior"
-                >
-                  <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
-                </button>
-
-                {/* Thumbnails - scroll horizontal en mobile */}
-                <div className="flex gap-2 overflow-x-auto px-2 py-2 flex-1 max-w-xs md:max-w-none">
-                  {images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentImageIndex(idx)}
-                      className={`flex-shrink-0 h-12 w-12 md:h-16 md:w-16 rounded overflow-hidden border-2 transition-all ${
-                        idx === currentImageIndex
-                          ? "border-red-600 ring-2 ring-red-500"
-                          : "border-gray-600 hover:border-gray-400"
-                      }`}
-                      title={`Ver imagen ${idx + 1}`}
-                    >
-                      <Image
-                        src={images[idx]}
-                        alt={`${product.name} vista ${idx + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="64px"
-                      />
-                    </button>
-                  ))}
-                </div>
-
-                <button
-                  onClick={handleNextImage}
-                  className="p-2 md:p-3 hover:bg-gray-800 rounded-full transition-colors text-gray-300 hover:text-white"
-                  aria-label="Siguiente imagen"
-                >
-                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
-                </button>
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-1">
+                {images.map((imageUrl, idx) => (
+                  <div
+                    key={idx}
+                    className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 cursor-pointer hover:scale-105 transition-all bg-gray-800 p-1"
+                    style={{
+                      borderColor: idx === 0 ? "#dc2626" : "#4b5563",
+                    }}
+                    onClick={() => {
+                      /* Carousel handles navigation */
+                    }}
+                  >
+                    <Image
+                      src={imageUrl}
+                      alt={`${product.name} thumb ${idx + 1}`}
+                      fill
+                      className="object-cover rounded"
+                      sizes="64px"
+                    />
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -149,7 +140,6 @@ export function ProductDetailModal({
                   {product.description}
                 </p>
               </div>
-              
             </div>
 
             {/* Botones de acción */}

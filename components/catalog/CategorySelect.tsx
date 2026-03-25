@@ -8,6 +8,7 @@ import type { ProcessedProduct, ProcessedCategory } from "@/types/strapi";
 interface CategorySelectProps {
   products: ProcessedProduct[];
   categories: ProcessedCategory[];
+  activeCategory?: string;
   loading?: boolean;
   onProductSelect?: (product: ProcessedProduct) => void;
 }
@@ -20,10 +21,11 @@ export function CategorySelect({
   products,
   categories,
   loading = false,
+  activeCategory,
   onProductSelect,
 }: CategorySelectProps) {
   const [selectedCategory, setSelectedCategory] = useState(
-    categories[0]?.name || ""
+    activeCategory || categories[0]?.name || ""
   );
 
   const filteredProducts = products.filter(

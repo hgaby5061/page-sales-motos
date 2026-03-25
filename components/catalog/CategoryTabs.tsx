@@ -8,6 +8,7 @@ import type { ProcessedProduct, ProcessedCategory } from "@/types/strapi";
 interface CategoryTabsProps {
   products: ProcessedProduct[];
   categories: ProcessedCategory[];
+  activeCategory?: string;
   loading?: boolean;
   onProductSelect?: (product: ProcessedProduct) => void;
 }
@@ -19,6 +20,7 @@ interface CategoryTabsProps {
 export function CategoryTabs({
   products,
   categories,
+  activeCategory,
   loading = false,
   onProductSelect,
 }: CategoryTabsProps) {
@@ -41,7 +43,7 @@ export function CategoryTabs({
   }
 
   return (
-    <Tabs defaultValue={categories[0]?.name || "all"} className="w-full">
+    <Tabs value={activeCategory || categories[0]?.name || "all"} className="w-full">
       {/* Pestañas de categorías */}
       <TabsList className="grid w-full text-white grid-cols-3 lg:grid-cols-4 mb-8 bg-gray-800 dark:bg-gray-900">
         {categories.map((category) => (

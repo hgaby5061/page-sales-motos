@@ -1,23 +1,38 @@
 "use client";
 
-import { useState } from "react";
-import { useCatalogData } from "@/hooks/useCatalogData";
+import { useState, useEffect } from "react";
 import { CatalogHeader } from "@/components/catalog/CatalogHeader";
 import { CategoryTabs } from "@/components/catalog/CategoryTabs";
 import { CategorySelect } from "@/components/catalog/CategorySelect";
 import { ProductDetailModal } from "@/components/catalog/ProductDetailModal";
-import type { ProcessedProduct } from "@/types/strapi";
+import type { ProcessedProduct, ProcessedCategory } from "@/types/strapi";
+
+interface CatalogContainerProps {
+  products: ProcessedProduct[];
+  categories: ProcessedCategory[];
+  error?: string;
+  activeCategory?: string;
+}
 
 /**
  * Container principal del catálogo
  * Orquesta la lógica de carga de datos, estado modal y eventos
  * Mantiene separación de responsabilidades: lógica aquí, presentación en componentes
  */
-export function CatalogContainer() {
-  const { data, loading, error } = useCatalogData();
+export function CatalogContainer({
+  products,
+  categories,
+  error,
+  activeCategory,
+}: CatalogContainerProps) {
   const [selectedProduct, setSelectedProduct] =
     useState<ProcessedProduct | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleProductSelect = (product: ProcessedProduct) => {
     setSelectedProduct(product);
@@ -50,14 +65,15 @@ export function CatalogContainer() {
         )}
 
         {/* Contenido principal */}
-        {data && data.products.length > 0 ? (
+        {products.length > 0 ? (
           <>
             {/* Desktop: Tabs */}
             <div className="hidden md:block">
               <CategoryTabs
-                products={data.products}
-                categories={data.categories}
-                loading={loading}
+                products={products}
+                categories={categories}
+                loading={!mounted}
+                activeCategory={activeCategory}
                 onProductSelect={handleProductSelect}
               />
             </div>
@@ -65,15 +81,16 @@ export function CatalogContainer() {
             {/* Mobile: Select */}
             <div className="md:hidden">
               <CategorySelect
-                products={data.products}
-                categories={data.categories}
-                loading={loading}
+                products={products}
+                categories={categories}
+                loading={!mounted}
+                activeCategory={activeCategory}
                 onProductSelect={handleProductSelect}
               />
             </div>
           </>
         ) : (
-          !loading && (
+          mounted && (
             <div className="text-center py-20">
               <p className="text-lg md:text-xl text-gray-400">
                 No hay productos disponibles en este momento
