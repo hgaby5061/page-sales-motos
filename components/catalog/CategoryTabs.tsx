@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,6 +11,7 @@ interface CategoryTabsProps {
   categories: ProcessedCategory[];
   activeCategory?: string;
   loading?: boolean;
+  onCategoryChange?: (category: string) => void;
   onProductSelect?: (product: ProcessedProduct) => void;
 }
 
@@ -22,8 +24,17 @@ export function CategoryTabs({
   categories,
   activeCategory,
   loading = false,
+  onCategoryChange,
   onProductSelect,
 }: CategoryTabsProps) {
+  const [selectedCategory, setSelectedCategory] = useState(
+    activeCategory || categories[0]?.name || "all"
+  );
+
+  useEffect(() => {
+    setSelectedCategory(activeCategory || categories[0]?.name || "all");
+  }, [activeCategory, categories]);
+
   // Agrupa productos por categoría
   const groupedProducts = categories.reduce((acc, category) => {
     acc[category.name] = products.filter(
@@ -42,8 +53,17 @@ export function CategoryTabs({
     );
   }
 
+  const handleValueChange = (value: string) => {
+    setSelectedCategory(value);
+    onCategoryChange?.(value);
+  };
+
   return (
-    <Tabs value={activeCategory || categories[0]?.name || "all"} className="w-full">
+    <Tabs
+      value={selectedCategory}
+      onValueChange={handleValueChange}
+      className="w-full"
+    >
       {/* Pestañas de categorías */}
       <TabsList className="grid w-full text-white grid-cols-3 lg:grid-cols-4 mb-8 bg-gray-800 dark:bg-gray-900">
         {categories.map((category) => (

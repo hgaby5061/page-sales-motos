@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { ProcessedProduct, ProcessedCategory } from "@/types/strapi";
@@ -10,6 +10,7 @@ interface CategorySelectProps {
   categories: ProcessedCategory[];
   activeCategory?: string;
   loading?: boolean;
+  onCategoryChange?: (category: string) => void;
   onProductSelect?: (product: ProcessedProduct) => void;
 }
 
@@ -22,11 +23,17 @@ export function CategorySelect({
   categories,
   loading = false,
   activeCategory,
+  onCategoryChange,
   onProductSelect,
 }: CategorySelectProps) {
+ 
   const [selectedCategory, setSelectedCategory] = useState(
     activeCategory || categories[0]?.name || ""
   );
+
+  useEffect(() => {
+    setSelectedCategory(activeCategory || categories[0]?.name || "");
+  }, [activeCategory, categories]);
 
   const filteredProducts = products.filter(
     (p) => p.categoryName === selectedCategory
@@ -54,7 +61,10 @@ export function CategorySelect({
         </label>
         <select
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) => {
+            setSelectedCategory(e.target.value);
+            onCategoryChange?.(e.target.value);
+          }}
           className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/50 transition-colors"
         >
           {categories.map((category) => (

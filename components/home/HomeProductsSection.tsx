@@ -29,7 +29,7 @@ export function HomeProductsSection({
   }, {} as Record<string, ProcessedProduct[]>);
 
   return (
-    <section className="py-20 bg-gray-900 dark:bg-black">
+    <section className="py-1 bg-gray-900 dark:bg-black">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -31,7 +31,10 @@ export function ScrollIndicator() {
   return (
     <>
       {/* Barra de progreso de scroll - siempre visible */}
-      <motion.div className="fixed left-0 right-0 top-0 z-50 h-1 origin-left bg-red-600" style={{ scaleX }} />
+      <motion.div
+        className="fixed left-0 right-0 top-0 z-[101] h-1 origin-left bg-red-600"
+        style={{ scaleX }}
+      />
 
       {/* Indicador de scroll animado - solo visible en la primera pantalla */}
       <motion.div
@@ -81,5 +84,5 @@ export function ScrollIndicator() {
         </motion.div>
       </motion.div>
     </>
-  )
+  );
 }

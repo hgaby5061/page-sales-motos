@@ -83,7 +83,7 @@ export function HeroMotorcycle({
             rotate: motorcycleRotate,
           }}
         >
-          <div className="relative mt-10 hidden h-[500px] w-[600px] lg:block">
+          <div className="relative mt-3 md:mt-10 h-[500px] w-[600px] lg:block">
             <Image
               src="/R.jpg?height=600&width=800"
               alt="Motocicleta deportiva roja"

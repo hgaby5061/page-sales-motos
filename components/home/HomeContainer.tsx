@@ -65,7 +65,7 @@ export function HomeContainer({ products, categories }: HomeContainerProps) {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
+      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black pt-24 md:pt-5">
         <HeroParticles quantity={30} />
         <SpeedLines />
 

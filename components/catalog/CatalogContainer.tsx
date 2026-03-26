@@ -29,10 +29,17 @@ export function CatalogContainer({
     useState<ProcessedProduct | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(
+    activeCategory || categories[0]?.name || ""
+  );
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    setSelectedCategory(activeCategory || categories[0]?.name || "");
+  }, [activeCategory, categories]);
 
   const handleProductSelect = (product: ProcessedProduct) => {
     setSelectedProduct(product);
@@ -47,7 +54,7 @@ export function CatalogContainer({
 
   return (
     <div className="min-h-screen bg-gray-900 dark:bg-black">
-      <div className="container mx-auto px-3 md:px-4 py-8 md:py-12">
+      <div className="container mx-auto px-3 md:px-4 py-12 md:py-12">
         {/* Encabezado */}
         <CatalogHeader
           title="Catálogo de Motocicletas"
@@ -73,7 +80,8 @@ export function CatalogContainer({
                 products={products}
                 categories={categories}
                 loading={!mounted}
-                activeCategory={activeCategory}
+                activeCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
                 onProductSelect={handleProductSelect}
               />
             </div>
@@ -84,7 +92,8 @@ export function CatalogContainer({
                 products={products}
                 categories={categories}
                 loading={!mounted}
-                activeCategory={activeCategory}
+                activeCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
                 onProductSelect={handleProductSelect}
               />
             </div>
