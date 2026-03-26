@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +14,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import type { ProcessedProduct } from "@/types/strapi";
 
 interface ProductDetailModalProps {
@@ -36,9 +36,19 @@ export function ProductDetailModal({
   const images =
     product.images.length > 0 ? product.images : [product.thumbnail];
 
+  const [carouselApi, setCarouselApi] = useState<any>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleThumbnailClick = (index: number) => {
+    if (carouselApi) {
+      carouselApi.scrollTo(index);
+      setActiveIndex(index);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl w-[95vw] max-h-[95vh] p-0 overflow-hidden bg-gray-900 text-white border-gray-800">
+      <DialogContent className="max-w-5xl w-[95vw] max-h-[95vh] p-0 overflow-y-auto bg-gray-900 text-white border-gray-800 ">
         <DialogHeader className="px-6 pt-6 pb-0 sticky top-0 bg-gray-900 z-10">
           <div className="flex items-start justify-between">
             <div>
@@ -52,28 +62,29 @@ export function ProductDetailModal({
           </div>
         </DialogHeader>
 
-        <div className="px-4 md:px-6 py-4 grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-y-auto max-h-[calc(95vh-120px)]">
+        <div className="px-4 md:px-6 py-4 grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[calc(95vh-140px)] overflow-y-auto lg:overflow-y-visible">
           {/* Galería de imágenes - Fixed responsive carousel */}
           <div className="order-1 lg:order-none flex flex-col gap-4">
-            <div className="w-full aspect-video lg:aspect-square max-h-[400px] overflow-hidden rounded-lg bg-gray-800">
+            <div className="w-full h-[350px] md:h-[450px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-800">
               <Carousel
                 opts={{ align: "start", loop: true }}
+                setApi={setCarouselApi}
                 className="w-full h-full"
               >
-                <CarouselContent className="-ml-4 lg:-ml-0">
+                <CarouselContent className="-ml-1">
                   {images.map((imageUrl, index) => (
                     <CarouselItem
-                      key={index}
-                      className="pl-4 lg:pl-0 md:basis-1/2 lg:basis-1/1"
+                      key={imageUrl}
+                      className="pl-4 md:pl-1 basis-full"
                     >
-                      <div className="relative h-full p-1">
+                      <div className="relative w-full h-[350px] md:h-[450px] bg-gray-800 rounded-lg p-1">
                         <Image
                           src={imageUrl}
                           alt={`${product.name} - Imagen ${index + 1}`}
                           fill
-                          className="object-cover rounded-lg"
+                          priority={index < 2}
+                          className="object-contain rounded-lg "
                           sizes="(max-width: 768px) 100vw, 50vw"
-                          priority={index === 0}
                         />
                       </div>
                     </CarouselItem>
@@ -81,8 +92,8 @@ export function ProductDetailModal({
                 </CarouselContent>
                 {images.length > 1 && (
                   <>
-                    <CarouselPrevious className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-700 absolute -left-2 top-1/2 -translate-y-1/2 z-20" />
-                    <CarouselNext className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-700 absolute -right-2 top-1/2 -translate-y-1/2 z-20" />
+                    <CarouselPrevious className="flex h-10 w-10 items-center justify-center rounded-full bg-black/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-700 absolute -left-2 top-1/2 -translate-y-1/2 z-30 shadow-2xl" />
+                    <CarouselNext className="flex h-10 w-10 items-center justify-center rounded-full bg-black/80 backdrop-blur-sm border border-gray-700 hover:bg-gray-700 absolute -right-2 top-1/2 -translate-y-1/2 z-30 shadow-2xl" />
                   </>
                 )}
               </Carousel>
@@ -90,17 +101,19 @@ export function ProductDetailModal({
 
             {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2 -mx-1">
+              <div className="flex gap-2 overflow-x-auto p-2 -mx-1 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900 lg:mb-10">
                 {images.map((imageUrl, idx) => (
                   <div
                     key={idx}
-                    className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 cursor-pointer hover:scale-105 transition-all bg-gray-800 p-1"
+                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 cursor-pointer hover:scale-105 transition-all duration-200 bg-gray-800 p-1 z-10 relative shadow-md ${
+                      activeIndex === idx
+                        ? "ring-2 ring-red-500 ring-offset-1 ring-offset-gray-900 scale-110"
+                        : ""
+                    }`}
                     style={{
-                      borderColor: idx === 0 ? "#dc2626" : "#4b5563",
+                      borderColor: activeIndex === idx ? "#dc2626" : "#4b5563",
                     }}
-                    onClick={() => {
-                      /* Carousel handles navigation */
-                    }}
+                    onClick={() => handleThumbnailClick(idx)}
                   >
                     <Image
                       src={imageUrl}
@@ -143,7 +156,7 @@ export function ProductDetailModal({
             </div>
 
             {/* Botones de acción */}
-            <div className="flex flex-col gap-3 mt-8">
+            <div className="flex flex-col gap-3 mt-8 lg:mb-8">
               <a
                 href={`https://wa.me/573001234567?text=Hola,%20estoy%20interesado%20en%20${encodeURIComponent(
                   product.name
