@@ -81,11 +81,11 @@ export function formatProducts(products: StrapiProduct[]): ProcessedProduct[] {
   return products.map((product) => {
     const thumbnailUrl =
       product.images && product.images.length > 0
-        ? `${STRAPI_URL}${product.images[0].url}`
+        ? product.images[0].url
         : "/placeholder.jpg";
 
     const allImages = product.images
-      ? product.images.map((img) => `${STRAPI_URL}${img.url}`)
+      ? product.images.map((img) => img.url)
       : [];
 
     return {
