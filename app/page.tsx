@@ -2,12 +2,13 @@ import { Suspense } from "react";
 import { Navbar } from "@/components/navbar";
 import { ScrollIndicator } from "@/components/scroll-indicator";
 import { HomeContainer } from "@/components/home/HomeContainer";
+import { fetchProducts, fetchCategories } from "@/services/strapiService";
 import {
-  fetchProducts,
-  fetchCategories,
   formatProducts,
   formatCategories,
-} from "@/services/strapiService";
+  extractProductsData,
+  extractCategoriesData,
+} from "@/lib/strapiFormatters";
 import type { ProcessedProduct, ProcessedCategory } from "@/types/strapi";
 
 interface HomePageProps {
@@ -17,12 +18,14 @@ interface HomePageProps {
 
 async function getHomeData(): Promise<HomePageProps> {
   try {
-    const [{ data: productsData }, { data: categoriesData }] =
-      await Promise.all([fetchProducts(), fetchCategories()]);
+    const [productsResponse, categoriesResponse] = await Promise.all([
+      fetchProducts(),
+      fetchCategories(),
+    ]);
 
     return {
-      products: formatProducts(productsData),
-      categories: formatCategories(categoriesData),
+      products: formatProducts(extractProductsData(productsResponse)),
+      categories: formatCategories(extractCategoriesData(categoriesResponse)),
     };
   } catch (error) {
     console.error("Error fetching home data:", error);

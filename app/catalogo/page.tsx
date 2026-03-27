@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 import { Navbar } from "@/components/navbar";
 import { CatalogContainer } from "@/components/catalog/CatalogContainer";
+import { fetchProducts, fetchCategories } from "@/services/strapiService";
 import {
-  fetchProducts,
-  fetchCategories,
   formatProducts,
   formatCategories,
-} from "@/services/strapiService";
+  extractProductsData,
+  extractCategoriesData,
+} from "@/lib/strapiFormatters";
 import type { ProcessedProduct, ProcessedCategory } from "@/types/strapi";
 
 interface CatalogPageProps {
@@ -17,12 +18,14 @@ interface CatalogPageProps {
 
 async function getCatalogData(): Promise<CatalogPageProps> {
   try {
-    const [{ data: productsData }, { data: categoriesData }] =
-      await Promise.all([fetchProducts(), fetchCategories()]);
+    const [productsResponse, categoriesResponse] = await Promise.all([
+      fetchProducts(),
+      fetchCategories(),
+    ]);
 
     return {
-      products: formatProducts(productsData),
-      categories: formatCategories(categoriesData),
+      products: formatProducts(extractProductsData(productsResponse)),
+      categories: formatCategories(extractCategoriesData(categoriesResponse)),
     };
   } catch (error) {
     console.error("Error fetching catalog data:", error);

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,8 +41,8 @@ export function Navbar() {
       }`}
     >
       <div className="container flex items-center justify-between px-4">
-        <Link href="/" className="text-2xl font-bold text-white">
-          Moto<span className="text-red-600">Elite</span>
+        <Link href="/">
+          <img src="/logo.png" alt="MoveUp" className="h-9 w-auto" />
         </Link>
 
         {/* Desktop Navigation */}
