@@ -158,7 +158,7 @@ export function ProductDetailModal({
             {/* Botones de acción */}
             <div className="flex flex-col gap-3 mt-8 lg:mb-8">
               <a
-                href={`https://wa.me/573001234567?text=Hola,%20estoy%20interesado%20en%20${encodeURIComponent(
+                href={`https://wa.me/55164646?text=Hola,%20estoy%20interesado%20en%20${encodeURIComponent(
                   product.name
                 )}`}
                 target="_blank"
