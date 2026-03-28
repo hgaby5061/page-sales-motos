@@ -6,7 +6,7 @@ import { icons } from "lucide-react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "MotoElite - Motocicletas de Alta Gama",
+  title: "MoveUp - Motocicletas de Alta Gama",
   description:
     "Descubre nuestra exclusiva colección de motocicletas de alta gama para los amantes de la velocidad y la aventura.",
     generator: 'v0.app',
