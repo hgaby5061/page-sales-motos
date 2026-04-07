@@ -15,6 +15,7 @@ interface HomePageProps {
   products: ProcessedProduct[];
   categories: ProcessedCategory[];
 }
+export const revalidate = 3600;
 
 async function getHomeData(): Promise<HomePageProps> {
   try {

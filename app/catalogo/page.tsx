@@ -36,6 +36,7 @@ async function getCatalogData(): Promise<CatalogPageProps> {
     };
   }
 }
+export const revalidate = 3600;
 
 /**
  * Página de catálogo - Server Component con SSR + ISR
