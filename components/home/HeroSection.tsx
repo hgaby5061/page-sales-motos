@@ -83,13 +83,14 @@ export function HeroMotorcycle({
             rotate: motorcycleRotate,
           }}
         >
-          <div className="relative mt-3 md:mt-10 h-[500px] w-[600px] lg:block">
+          <div className="relative sm:block h-[250px] w-[320px] md:h-[400px] md:w-[500px] lg:h-[500px] lg:w-[600px]">
             <Image
               src="/R.jpg?height=600&width=800"
               alt="Motocicleta deportiva roja"
               fill
               className="object-contain"
               priority
+              loading="eager"
             />
             <div className="absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/30 blur-3xl" />
             <div className="absolute bottom-0 left-1/2 h-6 w-[80%] -translate-x-1/2 rounded-full bg-black/40 blur-md" />
@@ -109,21 +110,19 @@ interface HeroHeaderProps {
  */
 export function HeroHeader({ onExplore }: HeroHeaderProps) {
   return (
-    <div className="max-w-2xl">
+    <div className="w-full max-w-3xl pr-0 sm:pr-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        
-      </motion.div>
+      ></motion.div>
 
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <span className="text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+        <span className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl">
           POTENCIA <span className="text-red-600">&</span> PASIÓN
         </span>
       </motion.h1>
@@ -133,7 +132,7 @@ export function HeroHeader({ onExplore }: HeroHeaderProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <span className="mb-8 max-w-xl text-xl text-gray-200 md:text-2xl block">
+        <span className="mb-8 max-w-xl text-base md:text-lg lg:text-xl text-gray-200 block">
           Experimenta la adrenalina de conducir las motocicletas más exclusivas
           del mercado.
         </span>
@@ -147,7 +146,7 @@ export function HeroHeader({ onExplore }: HeroHeaderProps) {
         <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
           <button
             onClick={onExplore}
-            className="rounded-lg bg-red-600 px-8 py-3 text-lg font-semibold text-white hover:bg-red-700 transition-colors hover:scale-105 active:scale-95"
+            className="rounded-lg bg-red-600 px-6 md:px-8 py-3 text-base md:text-lg font-semibold text-white hover:bg-red-700 transition-colors hover:scale-105 active:scale-95 w-full sm:w-auto"
           >
             Explorar Modelos
           </button>

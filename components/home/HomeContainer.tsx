@@ -65,15 +65,15 @@ export function HomeContainer({ products, categories }: HomeContainerProps) {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black pt-24 md:pt-5">
+      <section className="relative w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black pt-20 md:pt-5">
         <HeroParticles quantity={30} />
         <SpeedLines />
 
         {/* Efecto de luz radial */}
         <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/20 blur-3xl" />
 
-        <div className="container relative z-10 flex h-full flex-col items-start justify-center px-4 text-white">
-          <div className="flex w-full flex-col items-start lg:flex-row lg:items-center lg:justify-between">
+        <div className="container relative z-10 flex flex-col items-start justify-center px-4 py-12 md:py-24 md:min-h-screen text-white md:flex-row">
+          <div className="flex w-full flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
             <HeroHeader onExplore={handleExplore} />
             <HeroMotorcycle
               isVisible={showMotorcycle}

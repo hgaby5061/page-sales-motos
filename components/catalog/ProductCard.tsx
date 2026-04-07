@@ -17,14 +17,15 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
     <div onClick={onClick} className="group cursor-pointer relative z-0">
       <div className="relative z-0 overflow-hidden rounded-2xl bg-gray-800 dark:bg-gray-900 shadow-md hover:shadow-xl transition-all duration-300 h-full border border-gray-700 flex flex-col">
         {/* Imagen del producto */}
-        <div className="relative h-56 sm:h-64 md:aspect-square md:h-auto overflow-hidden bg-gray-700 dark:bg-gray-800 flex-shrink-0">
+        <div className="relative h-48 sm:h-56 md:h-64 lg:h-72 overflow-hidden bg-gray-700 dark:bg-gray-800 flex-shrink-0">
           <Image
             src={product.thumbnail}
             alt={product.name}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             priority={false}
+            loading="lazy"
           />
           {/* Overlay + categoría encima de la imagen */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
@@ -33,7 +34,7 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
               {product.categoryName}
             </span>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent md:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent md:hidden" />
         </div>
 
         {/* Información del producto */}

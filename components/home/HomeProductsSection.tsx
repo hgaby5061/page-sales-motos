@@ -21,27 +21,30 @@ export function HomeProductsSection({
   isInView = false,
 }: HomeProductsSectionProps) {
   // Agrupar productos por categoría
-  const groupedProducts = categories.reduce((acc, category) => {
-    acc[category.name] = products
-      .filter((p) => p.categoryName === category.name)
-      .slice(0, 4); // Solo 4 primeros
-    return acc;
-  }, {} as Record<string, ProcessedProduct[]>);
+  const groupedProducts = categories.reduce(
+    (acc, category) => {
+      acc[category.name] = products
+        .filter((p) => p.categoryName === category.name)
+        .slice(0, 4); // Solo 4 primeros
+      return acc;
+    },
+    {} as Record<string, ProcessedProduct[]>
+  );
 
   return (
-    <section className="py-1 bg-gray-900 dark:bg-black">
-      <div className="container mx-auto px-4">
+    <section className="py-12 md:py-16 bg-gray-900 dark:bg-black w-full">
+      <div className="container mx-auto px-4 w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
           <div className="mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <div>
-              <h2 className="text-center text-4xl font-bold sm:text-left sm:text-5xl text-white">
+            <div className="w-full">
+              <h2 className="text-center text-3xl font-bold sm:text-left sm:text-4xl md:text-5xl text-white">
                 Nuestra Colección
               </h2>
-              <p className="mt-2 max-w-2xl text-gray-300">
+              <p className="mt-2 max-w-2xl text-sm md:text-base text-gray-300">
                 Descubre nuestra selección de motocicletas premium para cada
                 tipo de piloto
               </p>
@@ -57,23 +60,23 @@ export function HomeProductsSection({
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
           >
-            <div className="mb-16">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl text-red-600 font-bold">
+            <div className="mb-12 md:mb-16">
+              <div className="flex flex-col items-start justify-between mb-6 gap-3 sm:flex-row sm:items-center">
+                <h3 className="text-xl md:text-2xl text-red-600 font-bold">
                   {category.name}
                 </h3>
                 <a
                   href={`/catalogo?category=${encodeURIComponent(
                     category.name
                   )}`}
-                  className="text-red-600 font-semibold hover:text-red-700 transition-colors"
+                  className="text-red-600 font-semibold hover:text-red-700 transition-colors text-sm md:text-base"
                 >
                   Ver todos →
                 </a>
               </div>
 
               {groupedProducts[category.name]?.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full">
                   {groupedProducts[category.name].map((product) => (
                     <ProductCard
                       key={product.id}
