@@ -30,10 +30,7 @@ async function getHomeData(): Promise<HomePageProps> {
     };
   } catch (error) {
     console.error("Error fetching home data:", error);
-    return {
-      products: [],
-      categories: [],
-    };
+    throw error;
   }
 }
 

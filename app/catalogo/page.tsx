@@ -29,11 +29,7 @@ async function getCatalogData(): Promise<CatalogPageProps> {
     };
   } catch (error) {
     console.error("Error fetching catalog data:", error);
-    return {
-      products: [],
-      categories: [],
-      error: "Error cargando catálogo desde Strapi",
-    };
+    throw error;
   }
 }
 export const revalidate = 3600;

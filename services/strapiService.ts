@@ -28,7 +28,8 @@ export async function fetchProducts(): Promise<StrapiProductsResponse> {
       {
         method: "GET",
         headers: apiHeaders,
-        next: { revalidate:3600 }, // ISR: revalidar cada hora
+        next: { revalidate: 86400 }, // ISR 24h
+        signal: AbortSignal.timeout(15000),
       }
     );
 
@@ -55,7 +56,8 @@ export async function fetchCategories(): Promise<StrapiCategoriesResponse> {
       {
         method: "GET",
         headers: apiHeaders,
-        next: { revalidate: 3600 },
+        next: { revalidate: 86400 }, // ISR 24h
+        signal: AbortSignal.timeout(15000),
       }
     );
 
