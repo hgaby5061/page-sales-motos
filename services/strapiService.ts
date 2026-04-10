@@ -24,13 +24,13 @@ const apiHeaders = {
 export async function fetchProducts(): Promise<StrapiProductsResponse> {
   try {
     const response = await fetch(
-      `${STRAPI_URL}/api/products?populate=*&filters[publishedAt][$notNull]=true&sort=name:asc`,
+      `${STRAPI_URL}/api/products?populate=*&filters[publishedAt][$notNull]=true&sort=name:asc&pagination[pageSize]=50`,
       {
         method: "GET",
         headers: apiHeaders,
-        next: { revalidate: 86400 }, // ISR 24h
+        next: { revalidate: 3600 }, // ISR 24h
         signal: AbortSignal.timeout(15000),
-      }
+      },
     );
 
     if (!response.ok) {
